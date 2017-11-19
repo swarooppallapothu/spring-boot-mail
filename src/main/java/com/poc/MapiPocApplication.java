@@ -28,7 +28,10 @@ public class MapiPocApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Application Started");
-        mailService.sendMessage("Test", "Test Body", "testmailid@domail.com");
+        String content = "";
+        content = "Test message from payqin sendgrid";
+        mailService.sendMessage("Test", content, "testmailid@domail.com");
+        mailService.sendMimeMessage("From Payqin Sendgrid", content, "text/plain", "testmailid@domail.com", null);
         System.exit(0);
     }
 

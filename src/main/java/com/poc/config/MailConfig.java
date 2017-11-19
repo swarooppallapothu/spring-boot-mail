@@ -8,11 +8,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.Properties;
 import javax.mail.PasswordAuthentication;
-
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 /**
  * Handle the configuration of a JavaMailSender bean.
@@ -73,6 +72,19 @@ public class MailConfig {
         return enabled;
     }
 
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Bean
     public JavaMailSender javaMailSender() {
         if (host == null || host.isEmpty() || port == 0) {
@@ -111,14 +123,23 @@ public class MailConfig {
         mailProps.put("mail.from", from);
         mailProps.put("mail.password", password);
         mailProps.put("mail.username", username);
+
+/*
+        mailProps.put("mail.smtp.socketFactory.port", port);
+        mailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        mailProps.put("mail.smtp.host", host);
+        mailProps.put("mail.smtp.user", username);
+        mailProps.put("mail.smtp.password", password);
+        mailProps.put("mail.smtp.port", port);
+        mailProps.put("mail.smtp.auth", "true");*/
         this.setMailProperties(mailProps);
         return Session.getInstance(mailProps,
                 new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                        username, password);// Specify the Username and the PassWord
-            }
-        });
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(
+                                username, password);// Specify the Username and the PassWord
+                    }
+                });
     }
 }
